@@ -48,9 +48,9 @@ Piece::Piece(int id, Mark left, Mark up, Mark right, Mark down, Piece *prev) {
 	this->prev = prev;
 }
 
-//int Piece::getId() {
-//	return id;
-//}
+int Piece::getId() {
+	return id;
+}
 
 Mark Piece::left() {
 	return marks[(LEFT + rotation) % 4];

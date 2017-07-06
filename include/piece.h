@@ -23,9 +23,7 @@ public:
 
 	Piece(int id, Mark left, Mark up, Mark right, Mark down, Piece *prev);
 
-	inline int getId() {
-		return id;
-	}
+	int getId();
 
 	Mark left();
 	Mark up();

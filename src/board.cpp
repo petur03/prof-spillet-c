@@ -4,19 +4,19 @@
 
 #include "board.h"
 
-inline bool match(Mark mark1, Mark mark2) {
+bool match(Mark mark1, Mark mark2) {
 	return (mark1.part != mark2.part) && (mark1.color == mark2.color);
 }
 
-inline bool matchLeft(Piece *board[], int top, Piece *piece) {
+bool matchLeft(Piece *board[], int top, Piece *piece) {
 	return match(board[top - 1]->right(), piece->left());
 }
 
-inline bool matchUp(Piece *board[], int top, Piece *piece) {
+bool matchUp(Piece *board[], int top, Piece *piece) {
 	return match(board[top - 4]->down(), piece->up());
 }
 
-inline bool matchBoth(Piece *board[], int top, Piece *piece) {
+bool matchBoth(Piece *board[], int top, Piece *piece) {
 	return matchLeft(board, top, piece) && matchUp(board, top, piece);
 }
 
