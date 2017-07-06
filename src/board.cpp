@@ -4,22 +4,19 @@
 
 #include "board.h"
 
-bool match(Mark mark1, Mark mark2) {
-	//printf("Matching: %i,%i - %i,%i ", mark1.part, mark1.color, mark2.part, mark2.color);
-	bool result = (mark1.part != mark2.part) && (mark1.color == mark2.color);
-	//printf("%s\n", result ? "true" : "false");
-	return result;
+inline bool match(Mark mark1, Mark mark2) {
+	return (mark1.part != mark2.part) && (mark1.color == mark2.color);
 }
 
-bool matchLeft(Piece *board[], int top, Piece *piece) {
-	return match(right(board[top - 1]), left(piece));
+inline bool matchLeft(Piece *board[], int top, Piece *piece) {
+	return match(board[top - 1]->right(), piece->left());
 }
 
-bool matchUp(Piece *board[], int top, Piece *piece) {
-	return match(down(board[top - 4]), up(piece));
+inline bool matchUp(Piece *board[], int top, Piece *piece) {
+	return match(board[top - 4]->down(), piece->up());
 }
 
-bool matchBoth(Piece *board[], int top, Piece *piece) {
+inline bool matchBoth(Piece *board[], int top, Piece *piece) {
 	return matchLeft(board, top, piece) && matchUp(board, top, piece);
 }
 
@@ -57,7 +54,7 @@ bool check(Piece *board[], int top, Piece *piece) {
 
 void printBoard(Piece *board[], int top) {
 	for (int i = 0; i < top; i++) {
-		printf("%i(%i) ", board[i]->id, board[i]->rotation);
+		board[i]->print();
 		if (((i+1) % 4) == 0)
 			printf("\n");
 	}

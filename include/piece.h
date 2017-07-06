@@ -1,35 +1,44 @@
 #pragma once
 
+#include "list.h"
+
 enum Direction { LEFT = 0, UP, RIGHT, DOWN };
 
 enum Part { Head=0, Pants };
 
 enum Color { Blue=0, Purple, Brown, Green };
 
-typedef struct Mark_s {
+struct Mark {
 	Part part;
 	Color color;
-} Mark;
+};
 
-typedef struct Piece_s {
+class Piece {
 	int id;
 	Mark marks[4];
 	int rotation;
-	struct Piece_s *next;
-	struct Piece_s *prev;
-} Piece;
+public:
+	Piece *next;
+	Piece *prev;
 
-Piece *init(int id, Mark left, Mark up, Mark right, Mark down, Piece *prev);
+	Piece(int id, Mark left, Mark up, Mark right, Mark down, Piece *prev);
 
-Mark left(Piece *p);
-Mark up(Piece *p);
-Mark right(Piece *p);
-Mark down(Piece *p);
+	inline int getId() {
+		return id;
+	}
 
-void rotate(Piece *p);
+	Mark left();
+	Mark up();
+	Mark right();
+	Mark down();
+
+	void rotate();
+	void printPiece();
+	void print();
+
+	void checkPiece();
+	void checkMarks();
+	void checkRotation();
+};
 
 List *makePieces();
-
-void printPiece(Piece *piece);
-
-void checkPiece(Piece *piece);
