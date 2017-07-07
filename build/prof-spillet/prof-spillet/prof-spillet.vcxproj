@@ -144,13 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\board.cpp" />
-    <ClCompile Include="..\..\..\src\list.cpp" />
     <ClCompile Include="..\..\..\src\piece.cpp" />
     <ClCompile Include="..\..\..\src\prof.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\board.h" />
-    <ClInclude Include="..\..\..\include\list.h" />
     <ClInclude Include="..\..\..\include\piece.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

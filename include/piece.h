@@ -1,7 +1,5 @@
 #pragma once
 
-#include "list.h"
-
 enum Direction { LEFT = 0, UP, RIGHT, DOWN };
 
 enum Part { Head=0, Pants };
@@ -18,10 +16,10 @@ class Piece {
 	Mark marks[4];
 	int rotation;
 public:
-	Piece *next;
-	Piece *prev;
+	bool used;
 
-	Piece(int id, Mark left, Mark up, Mark right, Mark down, Piece *prev);
+	Piece();
+	void init(int id, Mark left, Mark up, Mark right, Mark down);
 
 	int getId();
 
@@ -39,4 +37,4 @@ public:
 	void checkRotation();
 };
 
-List *makePieces();
+void initPieces(Piece pieces[16]);
