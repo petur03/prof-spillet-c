@@ -3,49 +3,41 @@
 #include <stdio.h>
 #include <assert.h>
 #include "piece.h"
-#include "list.h"
 
-List *makePieces() {
-	Piece *first = new Piece(0, { Pants, Purple }, { Head, Green }, { Head, Brown }, { Pants, Brown }, NULL);
-	Piece *next = first;
-	Piece *prev;
+void initPieces(Piece pieces[16]) {
+	pieces[0].init(0, { Pants, Purple }, { Head, Green }, { Head, Brown }, { Pants, Brown });
+	pieces[1].init(1, { Head, Purple }, { Pants, Green }, { Pants, Blue }, { Head, Brown });
+	pieces[2].init(2, { Head, Blue }, { Pants, Blue }, { Pants, Brown }, { Head, Brown });
+	pieces[3].init(3, { Head, Blue }, { Head, Brown }, { Pants, Green }, { Pants, Purple });
 
-	next = new Piece(1, { Head, Purple }, { Pants, Green }, { Pants, Blue }, { Head, Brown }, (prev = next));
-	next = new Piece(2, { Head, Blue }, { Pants, Blue }, { Pants, Brown }, { Head, Brown }, (prev = next));
-	next = new Piece(3, { Head, Blue }, { Head, Brown }, { Pants, Green }, { Pants, Purple }, (prev = next));
+	pieces[4].init(4, { Head, Purple }, { Pants, Brown }, { Pants, Green }, { Head, Blue });
+	pieces[5].init(5, { Pants, Purple }, { Head, Green }, { Head, Blue }, { Pants, Brown });
+	pieces[6].init(6, { Head, Purple }, { Pants, Blue }, { Pants, Green }, { Head, Brown });
+	pieces[7].init(7, { Head, Blue }, { Pants, Brown }, { Pants, Purple }, { Head, Brown });
 
-	next = new Piece(4, { Head, Purple }, { Pants, Brown }, { Pants, Green }, { Head, Blue }, (prev = next));
-	next = new Piece(5, { Pants, Purple }, { Head, Green }, { Head, Blue }, { Pants, Brown }, (prev = next));
-	next = new Piece(6, { Head, Purple }, { Pants, Blue }, { Pants, Green }, { Head, Brown }, (prev = next));
-	next = new Piece(7, { Head, Blue }, { Pants, Brown }, { Pants, Purple }, { Head, Brown }, (prev = next));
+	pieces[8].init(8, { Pants, Green }, { Pants, Green }, { Head, Brown }, { Head, Purple });
+	pieces[9].init(9, { Pants, Green }, { Pants, Blue }, { Head, Green }, { Head, Purple });
+	pieces[10].init(10, { Head, Brown }, { Head, Blue }, { Pants, Green }, { Pants, Purple });
+	pieces[11].init(11, { Pants, Blue }, { Head, Green }, { Head, Green }, { Pants, Brown });
 
-	next = new Piece(8, { Pants, Green }, { Pants, Green }, { Head, Brown }, { Head, Purple }, (prev = next));
-	next = new Piece(9, { Pants, Green }, { Pants, Blue }, { Head, Green }, { Head, Purple }, (prev = next));
-	next = new Piece(10, { Head, Brown }, { Head, Blue }, { Pants, Green }, { Pants, Purple }, (prev = next));
-	next = new Piece(11, { Pants, Blue }, { Head, Green }, { Head, Green }, { Pants, Brown }, (prev = next));
+	pieces[12].init(12, { Pants, Brown }, { Head, Purple }, { Head, Blue }, { Pants, Green });
+	pieces[13].init(13, { Pants, Blue }, { Head, Purple }, { Head, Green }, { Pants, Brown });
+	pieces[14].init(14, { Head, Purple }, { Pants, Brown }, { Pants, Green }, { Head, Green });
+	pieces[15].init(15, { Pants, Purple }, { Head, Green }, { Head, Blue }, { Pants, Brown });
 
-	next = new Piece(12, { Pants, Brown }, { Head, Purple }, { Head, Blue }, { Pants, Green }, (prev = next));
-	next = new Piece(13, { Pants, Blue }, { Head, Purple }, { Head, Green }, { Pants, Brown }, (prev = next));
-	next = new Piece(14, { Head, Purple }, { Pants, Brown }, { Pants, Green }, { Head, Green }, (prev = next));
-	next = new Piece(15, { Pants, Purple }, { Head, Green }, { Head, Blue }, { Pants, Brown }, (prev = next));
-
-	List *list = (List*)calloc(1, sizeof(List));
-	list->head = first;
-	list->tail = next;
-	return list;
 }
 
-Piece::Piece(int id, Mark left, Mark up, Mark right, Mark down, Piece *prev) {
+Piece::Piece() {
+}
+
+void Piece::init(int id, Mark left, Mark up, Mark right, Mark down) {
 	this->id = id;
 	this->marks[LEFT] = left;
 	this->marks[UP] = up;
 	this->marks[RIGHT] = right;
 	this->marks[DOWN] = down;
 	this->rotation = 0;
-	if (prev != NULL)
-		prev->next = this;
-	this->next = NULL;
-	this->prev = prev;
+	this->used = false;
 }
 
 int Piece::getId() {
