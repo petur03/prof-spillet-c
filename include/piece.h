@@ -2,9 +2,9 @@
 
 enum Direction { LEFT = 0, UP, RIGHT, DOWN };
 
-enum Part { Head=0, Pants };
+enum Part { Head=0, Pants, NUM_PARTS };
 
-enum Color { Blue=0, Purple, Brown, Green };
+enum Color { Blue=0, Purple, Brown, Green, NUM_COLORS };
 
 struct Mark {
 	Part part;
@@ -22,6 +22,7 @@ public:
 	void init(int id, Mark left, Mark up, Mark right, Mark down);
 
 	int getId();
+	int getRotation();
 
 	Mark left();
 	Mark up();

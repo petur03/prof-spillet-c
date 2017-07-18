@@ -44,6 +44,10 @@ int Piece::getId() {
 	return id;
 }
 
+int Piece::getRotation() {
+	return rotation;
+}
+
 Mark Piece::left() {
 	return marks[(LEFT + rotation) % 4];
 }
