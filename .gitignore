@@ -297,3 +297,8 @@ __pycache__/
 # VIM
 .*.swp
 
+# Project specific
+cmake-build-debug/
+resources/png-target/
+
+

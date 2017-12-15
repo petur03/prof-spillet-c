@@ -1,8 +1,10 @@
-#include <stdio.h>
+
+#include <iostream>
 #include <chrono>
 #include <vector>
 #include "piece.h"
 #include "board.h"
+#include "SolutionGenerator.h"
 
 #define NUM_PIECES 16
 
@@ -15,7 +17,6 @@ int num_solutions = 0;
 vector<Configuration*> solutions;
 
 int main(int argc, const char** argv) {
-	chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 
 	Piece pieces[16];
 	initPieces(pieces);
@@ -31,48 +32,55 @@ int main(int argc, const char** argv) {
 	//	pieces[i].printPiece();
 	//}
 
+	cout << "Finding solutions..." << endl;
+	chrono::steady_clock::time_point begin = chrono::steady_clock::now();
 	place(board, 0, pieces);
 
 	chrono::steady_clock::time_point end = chrono::steady_clock::now();
 
-	printf("Time difference = %f\n", (chrono::duration_cast<chrono::microseconds>(end - begin).count()) / 1000000.0f);
+	cout << "Found " << num_solutions << " solutions in "
+		 << ((chrono::duration_cast<chrono::microseconds>(end - begin).count()) / 1000000.0f) << " seconds." << endl;
+	//printf("Time difference = %f\n", (chrono::duration_cast<chrono::microseconds>(end - begin).count()) / 1000000.0f);
 
+	cout << "Generating images..." << endl;
+	SolutionGenerator solGen = SolutionGenerator();
 	num_solutions = 0;
 	for (vector<Configuration *>::iterator it = solutions.begin(); it != solutions.end(); ++it) {
-		Configuration *solution = *(it._Ptr);
-		printf("Solution %i:\n", num_solutions);
+		Configuration *solution = *(it);
+		//printf("Solution %i:\n", num_solutions);
 		for (int i = 0; i < 16; i++) {
-			printf("%d(%d) ", solution[i].piece, solution[i].rotation);
+			//printf("%d(%d) ", solution[i].piece, solution[i].rotation);
 		}
-		printf("\n");
+		//printf("\n");
 		num_solutions++;
 
+		solGen.genSolution(solution, num_solutions);
 
 	}
 
-	getc(stdin);
+	//getc(stdin);
 	return 0;
 }
 
 void place(Piece *board[], int top, Piece pieces[16]) {
 	if (top == 16) {
 		// DONE
-		printf("Done! %i\n", num_solutions);
-		printBoard(board, top);
+		//printf("Done! %i\n", num_solutions);
+		//printBoard(board, top);
 		Configuration *solution = new Configuration[16];
 		for (int i = 0; i < 16; i++) {
 			solution[i].piece = board[i]->getId();
 			solution[i].rotation = board[i]->getRotation();
 		}
 		solutions.push_back(solution);
-		printf("\n");
+		//printf("\n");
 		num_solutions++;
 
 		//getc(stdin);
 		return;
 	}
 
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < NUM_PIECES; i++) {
 		Piece *current = &pieces[i];
 		if (current->used) {
 			continue;
@@ -91,7 +99,7 @@ void place(Piece *board[], int top, Piece pieces[16]) {
 			}
 		}
 
-		for (int i = 0; i < 4; i++) { // for each rotation
+		for (int j = 0; j < 4; j++) { // for each rotation
 			if (check(board, top, current)) {
 				current->used = true;
 

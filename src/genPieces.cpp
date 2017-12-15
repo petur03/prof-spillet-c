@@ -10,7 +10,18 @@ using namespace Magick;
 void loadImages(Image images[NUM_PARTS][NUM_COLORS]);
 void checkSizes(Image images[NUM_PARTS][NUM_COLORS]);
 
+const char kPathSeparator =
+#ifdef _WIN32
+		'\\';
+#else
+		'/';
+#endif
+
 string colors[4] = { "blue", "purple", "brown", "green" };
+
+//string resourceDir = "C:\\stuff\\games\\prof-spillet-c\\resources\\";
+//string resourceDir = "../resources/";
+string resourceDir = "/home/petur/stuff/games/prof-spillet-c/resources/";
 
 int main(int argc, const char *argv[]) {
 
@@ -45,7 +56,7 @@ int main(int argc, const char *argv[]) {
 		target.rotate(90.0);
 		target.scale(Geometry(outSize, outSize));
 
-		target.write("C:\\stuff\\games\\prof-spillet-c\\resources\\png-target\\" + std::to_string(i) + ".png");
+		target.write(resourceDir + "png-target" + kPathSeparator + std::to_string(i) + ".png");
 	}
 
 	cout << "Done" << endl;
@@ -62,12 +73,16 @@ void checkSizes(Image images[NUM_PARTS][NUM_COLORS]) {
 			if (width == 0) {
 				height = s.height();
 				width = s.width();
+                /*
 				if (width != height) {
-					throw new exception("Image is not square!");
+                    cout << "width: " << width << " height: " << height << endl;
+					throw exception(); // "Image is not square!"
 				}
+                 */
 			}
 			else if (height != s.height() || width != s.width()) {
-				throw new exception(("Image sizes differ! Part: " + to_string(part) + " Color: " + colors[color]).c_str());
+                printf("Image sizes differ! Part: %s Color: %s\n", to_string(part).c_str(), colors[color].c_str());
+				throw exception(); //("Image sizes differ! Part: " + to_string(part) + " Color: " + colors[color]).c_str());
 			}
 
 		}
@@ -77,17 +92,19 @@ void checkSizes(Image images[NUM_PARTS][NUM_COLORS]) {
 void loadImages(Image images[NUM_PARTS][NUM_COLORS]) {
 	for (int part = 0; part < NUM_PARTS; part++) {
 		for (int color = 0; color < NUM_COLORS; color++) {
-			images[part][color].read("C:\\stuff\\games\\prof-spillet-c\\resources\\png-source\\person-" + colors[color] +".png");
+            printf("loading: %d, %d\n", part, color);
+            printf("%s\n", (resourceDir + "png-source" + kPathSeparator + "person-" + colors[color] +".png").c_str());
+			images[part][color].read(resourceDir + "png-source" + kPathSeparator + "person-" + colors[color] +".png");
 
 			if (part == Pants) {
 				images[part][color].rotate(180.0);
 			}
 
 			Geometry s = images[part][color].size();
-			images[part][color].crop(Geometry(s.width, s.height / 2, 0, 0));
+			images[part][color].crop(Geometry(s.width(), s.height() / 2, 0, 0));
 
 
-			images[part][color].write("C:\\stuff\\games\\prof-spillet-c\\resources\\png-target\\" + std::to_string(part) + "-" + colors[color] + ".png");
+			images[part][color].write(resourceDir + "png-target" + kPathSeparator + std::to_string(part) + "-" + colors[color] + ".png");
 		}
 	}
 }
